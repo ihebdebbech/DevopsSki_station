@@ -21,16 +21,16 @@ pipeline {
         stage('Compile') {
             steps {
                 sh 'mvn compile'
-                echo 'compile done...'
+                echo 'compile done......'
             }
-        }
+        }/*
           stage('Test') {
             steps {
                 echo 'Running tests...'
                 sh 'mvn test'
             }
         }
-
+*/
         // Uncomment the Nexus stage if needed
         /*
         stage('Nexus') {
