@@ -23,14 +23,22 @@ pipeline {
                 sh 'mvn compile'
                 echo 'compile done......'
             }
-        }/*
-          stage('Test') {
+        }
+        stage('Test') {
             steps {
                 echo 'Running tests...'
                 sh 'mvn test'
             }
         }
-*/
+
+        stage('Sonarqube') {
+            steps {
+                sh 'mvn test jacoco:report'
+                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@"
+            }
+        }
+
+
         // Uncomment the Nexus stage if needed
         /*
         stage('Nexus') {
