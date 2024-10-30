@@ -27,7 +27,7 @@ pipeline {
               }
               stage('Test') {
                   steps {
-                      sh "mvn test" // Run unit tests using mvn test
+                      sh "mvn test install" // Run unit tests using mvn test
                   }
               }/*
 
