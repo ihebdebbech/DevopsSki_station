@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Pulling...'
                 git(
-                    branch: 'main',
+                    branch: 'mohamed',
                     url: 'https://github.com/ihebdebbech/DevopsSki_station.git'
                 )
             }
