@@ -38,14 +38,10 @@ pipeline {
             }
         }
 
-
-        // Uncomment the Nexus stage if needed
-        /*
         stage('Nexus') {
             steps {
                 sh 'mvn deploy -Dmaven.test.skip'
             }
         }
-        */
     }
 }
