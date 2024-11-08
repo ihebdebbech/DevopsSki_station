@@ -16,6 +16,8 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+		<sonar.projectKey>com.example:gestion-station-skii</sonar.projectKey> <!-- Remplacez par votre clé de projet -->
+		<sonar.host.url>http://your-sonarqube-server</sonar.host.url> <!-- Remplacez par l'URL de votre serveur SonarQube -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -68,11 +70,6 @@
 			<artifactId>doxia-core</artifactId>
 			<version>1.9.1</version> <!-- or a compatible version -->
 		</dependency>
-
-
-
-
-
 	</dependencies>
 
     <build>

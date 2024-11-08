@@ -31,17 +31,17 @@ pipeline {
             }
         }
 
-        // stage('Sonarqube') {
-        //     steps {
-        //         sh 'mvn test jacoco:report'
-        //         sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@"
-        //     }
-        // }
-
-        stage('Nexus') {
+        stage('Sonarqube') {
             steps {
-                sh 'mvn deploy -Dmaven.test.skip'
+                sh 'mvn test jacoco:report'
+                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@"
             }
         }
+
+        // stage('Nexus') {
+        //    steps {
+        //        sh 'mvn deploy -Dmaven.test.skip'
+        //    }
+        // }
     }
 }
