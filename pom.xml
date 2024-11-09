@@ -9,12 +9,14 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>tn.esprit.spring</groupId>
-	<artifactId>station-ski</artifactId>
-	<version>1.0.1</version>
-	<name>station-ski</name>
-	<description>Demo project for Spring Boot</description>
+	<artifactId>stationskii</artifactId>
+	<version>1.0</version>
+	<name>stationskii</name>
+	<description>gestion-station-skii</description>
 	<properties>
 		<java.version>1.8</java.version>
+		<sonar.projectKey>tn.esprit.spring:stationskii</sonar.projectKey> <!-- Remplacez par votre clé de projet -->
+		<sonar.host.url>http://your-sonarqube-server</sonar.host.url> <!-- Remplacez par l'URL de votre serveur SonarQube -->
 		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
 	</properties>
 	<dependencies>
@@ -27,17 +29,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -45,14 +36,42 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.12</version>
+			<version>1.6.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.9.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.9.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -68,27 +87,38 @@
 				</configuration>
 			</plugin>
 
+			<!-- Jacoco Maven Plugin -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.8</version>  <!-- You can use the latest version -->
+				<version>0.8.10</version>
 				<executions>
 					<execution>
+						<id>prepare-agent</id>
 						<goals>
-							<goal>prepare-agent</goal> <!-- Starts the Jacoco agent -->
+							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
 					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
 						<goals>
-							<goal>report</goal> <!-- Generates the code coverage report -->
+							<goal>report</goal>
 						</goals>
-						<phase>verify</phase> <!-- Runs after tests are executed -->
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- SonarQube Maven Plugin -->
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>3.9.0.2155</version>
+			</plugin>
 		</plugins>
-		<finalName>StationSki</finalName>
 	</build>
+
+	<!-- Deploy to Nexus -->
 	<distributionManagement>
 		<repository>
 			<id>deploymentRepo</id>
