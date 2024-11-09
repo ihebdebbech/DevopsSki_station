@@ -58,6 +58,18 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.7</version>
+            <scope>test</scope>
+        </dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.8.2</version> <!-- ou la version la plus récente -->
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -114,6 +126,7 @@
 				<version>3.9.0.2155</version> <!-- Remplacez par la dernière version si nécessaire -->
 			</plugin>
         </plugins>
+		<finalName>StationSki</finalName>
     </build>
 
 	<!-- Deploy to Nexus -->
@@ -121,7 +134,7 @@
 		<repository>
 			<id>deploymentRepo</id>
 			<name>Nexus Repository</name>
-			<url>http://localhost:8081/repository/maven-releases/</url>
+			<url>http://192.168.33.10:8081/repository/maven-releases/</url>
 		</repository>
 	</distributionManagement>
 

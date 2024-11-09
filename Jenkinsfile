@@ -31,12 +31,12 @@ pipeline {
             }
         }
 
-        //stage('Sonarqube') {
-        //    steps {
-            //    sh 'mvn test jacoco:report'
-        //        sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@"
-        //    }
-        //}
+        stage('Sonarqube') {
+            steps {
+               sh 'mvn test jacoco:report'
+               sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@"
+            }
+        }
 
         stage('Nexus') {
            steps {
