@@ -67,6 +67,25 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.8</version>  <!-- You can use the latest version -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal> <!-- Starts the Jacoco agent -->
+						</goals>
+					</execution>
+					<execution>
+						<goals>
+							<goal>report</goal> <!-- Generates the code coverage report -->
+						</goals>
+						<phase>verify</phase> <!-- Runs after tests are executed -->
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<finalName>StationSki</finalName>
 	</build>

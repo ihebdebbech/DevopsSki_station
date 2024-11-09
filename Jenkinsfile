@@ -20,8 +20,7 @@ pipeline {
 
         stage('Install') {
             steps {
-                sh 'mvn dependency:purge-local-repository -DreResolve=true'
-                sh 'mvn clean install'
+                sh 'mvn install'
 
             }
         }
