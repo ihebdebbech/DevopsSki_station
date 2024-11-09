@@ -77,8 +77,9 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.doxia</groupId>
-			<artifactId>doxia-core</artifactId>
-			<version>1.9.1</version> <!-- or a compatible version -->
+			<artifactId>doxia-sink-api</artifactId>
+			<version>1.9</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -101,7 +102,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.10</version>
+				<version>0.8.11</version>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
