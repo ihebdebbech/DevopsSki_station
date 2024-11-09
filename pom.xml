@@ -65,36 +65,14 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.maven.doxia</groupId>
-			<artifactId>doxia-sink-api</artifactId>
-			<version>1.9</version> <!-- Use the version compatible with your Maven setup -->
-			<scope>compile</scope>
-		</dependency>
+
 
 	</dependencies>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>3.21.0</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.doxia</groupId>
-						<artifactId>doxia-core</artifactId>
-						<version>2.0.0</version> <!-- Update to a compatible version -->
-					</dependency>
-				</dependencies>
-			</plugin>
 
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>3.1.1</version> <!-- Updated for compatibility -->
-			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -106,13 +84,7 @@
 							<goal>prepare-agent</goal>
 						</goals>
 					</execution>
-					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
+
 				</executions>
 			</plugin>
 		</plugins>
