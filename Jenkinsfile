@@ -1,84 +1,98 @@
 pipeline {
-    agent any 
-    
+    environment {
+
+        registry = "ihebdebbech/backend"
+
+        registryCredential = 'dockerhub_id'
+
+        dockerImage = ''
+
+    }
+
+    agent any
+
     stages {
-        stage('Checkout GIT') {
+        stage('git') {
             steps {
-                echo 'Pulling...'
-                git(
-                    branch: 'main',
-                    url: 'https://github.com/ihebdebbech/DevopsSki_station.git'
-                )
+                echo 'pulling from github';
+                git branch : 'ihebdebbech',
+                url : 'https://github.com/ihebdebbech/DevopsSki_station.git'
+            }
+        }
+         stage('maven build ') {
+            steps {
+                echo 'maven build';
+                sh """mvn clean install """
+            }
+        }
+          stage('testing with mockito') {
+            steps {
+                echo 'maven testing';
+                sh "mvn test"
+
+        }
+          }
+         stage('Sonarqube') {
+            steps {
+                echo 'sonar test';
+               sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@'
+            }
+       }
+
+       stage('ArtifactArk') {
+           steps {
+               echo 'Deploy to nexus';
+                sh 'mvn deploy -DskipTests'
+
+           }
+        }
+         stage('Building our image') {
+
+            steps {
+
+                script {
+
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+
+                }
+
+            }
+
+       }
+         stage('Deploy our image') {
+
+           steps {
+
+                script {
+
+                    docker.withRegistry( '', registryCredential ) {
+
+                        dockerImage.push()
+
+                  }
+
+               }
+
+            }
+
+       }
+
+        stage('Building and deploying using docker-compose') {
+            steps {
+               sh 'docker-compose up -d'
             }
         }
 
-       stage('Clean') {
-                  steps {
-                      // Execute 'mvn clean' command
-                      sh 'mvn clean'
-                  }
-              }
 
-              stage('Compile') {
-                  steps {
-                      // Execute 'mvn compile' command
-                      sh 'mvn compile'
-                  }
-              }
-              stage('Test') {
-                  steps {
-                      sh "mvn test install" // Run unit tests using mvn test
-                  }
-              }/*
+       stage('Grafana Prometheus') {
+            steps {
+                sh 'docker start prometheus'
+                sh 'docker start grafana'
+            }
+        }
 
-              stage('Sonarqube') {
-                  environment {
-                      // Define SonarQube credentials
-                      SONAR_USERNAME = credentials('admin_sonar')
 
-                  }
-                  steps {
-                      sh 'mvn test jacoco:report'
-                      sh "mvn sonar:sonar -Dsonar.login=${SONAR_USERNAME} -Dsonar.projectKey=devops_groupe4 -Dsonar.projectName='devops_groupe4'"
-                  }
-              }*/
-             // stage('Nexus') {
-               //   steps {
-                 //     sh 'mvn deploy -Dmaven.test.skip'
-                  //}
-              //}
 
-              stage('Building image') {
-                  steps {
-                      script {
-                              sh 'docker build -t ihebdebbech/devopsskistation:1.0.1 .'
-                      }
-                  }
-              }
+    }
 
-            /*  stage('push docker hub') {
-                  steps {
-                      script {
-                          try {
-                              echo 'Building Docker image...'
-                              sh 'docker build -t ihebdebbech/devopsskistation:1.0.1 .'
-
-                              echo 'Logging in to Docker Hub...'
-                              sh 'docker login -u ihebdebbech -p devops123'
-                              echo 'Pushing Docker image to Docker Hub...'
-                              sh 'docker push ihebdebbech/devopsskistation:1.0.1'
-                          } catch (Exception e) {
-                              echo "Error occurred while building and pushing Docker image: ${e.message}"
-                              currentBuild.result = 'FAILURE'
-                              error("Docker build and push failed")
-                          }
-                      }
-                  }
-              }
-              stage('Docker Compose') {
-                  steps {
-                      sh 'docker compose up -d'
-                  }
-              }*/
-          }
-      }
+}
