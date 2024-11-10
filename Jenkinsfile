@@ -1,6 +1,10 @@
 pipeline {
-    agent any 
-    
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS_ID = 'dockerCreds'
+    }
+
     stages {
         stage('Checkout GIT') {
             steps {
@@ -21,7 +25,6 @@ pipeline {
         stage('Install') {
             steps {
                 sh 'mvn clean install -U'
-
             }
         }
 
@@ -31,6 +34,7 @@ pipeline {
                 echo 'compile done......'
             }
         }
+
         stage('Test') {
             steps {
                 echo 'Running tests...'
@@ -40,15 +44,42 @@ pipeline {
 
         stage('Sonarqube') {
             steps {
-               sh 'mvn test jacoco:report'
-               sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@"
+                sh 'mvn test jacoco:report'
+                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@"
+            }
+        }
+
+        stage('Upload Artifact to Nexus') {
+            steps {
+                sh 'mvn deploy -Dmaven.test.skip=true --settings /usr/share/maven/conf/settings.xml'
+            }
+        }
+
+        stage('Building Docker Image') {
+            steps {
+                script {
+                    echo 'Building Docker image...'
+                    sh 'docker build -t chebbi4m/mohamedchebbiStationSkii:firstpush .'
+                }
+            }
+        }
+
+        stage('Pushing Docker Image to DockerHub') {
+            steps {
+                script {
+                    echo 'Pushing Docker image to DockerHub...'
+                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS_ID, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                        sh 'docker push chebbi4m/mohamedchebbiStationSkii:firstpush'
+                    }
+                }
             }
         }
 
         stage('Nexus') {
-           steps {
-               sh 'mvn deploy -Dmaven.test.skip'
-           }
+            steps {
+                sh 'mvn deploy -Dmaven.test.skip'
+            }
         }
     }
 }
