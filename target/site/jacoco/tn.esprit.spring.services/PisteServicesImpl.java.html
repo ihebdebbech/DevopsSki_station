@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PisteServicesImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gestion-station-ski</a> &gt; <a href="index.source.html" class="el_package">tn.esprit.spring.services</a> &gt; <span class="el_source">PisteServicesImpl.java</span></div><h1>PisteServicesImpl.java</h1><pre class="source lang-java linenums">package tn.esprit.spring.services;
+
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import tn.esprit.spring.entities.Piste;
+import tn.esprit.spring.repositories.IPisteRepository;
+
+import java.util.List;
+<span class="nc" id="L9">@AllArgsConstructor</span>
+@Service
+public class PisteServicesImpl implements  IPisteServices{
+
+    private IPisteRepository pisteRepository;
+
+    @Override
+    public List&lt;Piste&gt; retrieveAllPistes() {
+<span class="nc" id="L17">        return pisteRepository.findAll();</span>
+    }
+
+    @Override
+    public Piste addPiste(Piste piste) {
+<span class="nc" id="L22">        return pisteRepository.save(piste);</span>
+    }
+
+    @Override
+    public void removePiste(Long numPiste) {
+<span class="nc" id="L27">        pisteRepository.deleteById(numPiste);</span>
+<span class="nc" id="L28">    }</span>
+
+    @Override
+    public Piste retrievePiste(Long numPiste) {
+<span class="nc" id="L32">        return pisteRepository.findById(numPiste).orElse(null);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SkierServicesImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">gestion-station-ski</a> &gt; <a href="index.source.html" class="el_package">tn.esprit.spring.services</a> &gt; <span class="el_source">SkierServicesImpl.java</span></div><h1>SkierServicesImpl.java</h1><pre class="source lang-java linenums">package tn.esprit.spring.services;
+
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import tn.esprit.spring.entities.*;
+import tn.esprit.spring.repositories.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+<span class="nc" id="L12">@AllArgsConstructor</span>
+@Service
+public class SkierServicesImpl implements ISkierServices {
+
+    private ISkierRepository skierRepository;
+
+    private IPisteRepository pisteRepository;
+
+    private ICourseRepository courseRepository;
+
+    private IRegistrationRepository registrationRepository;
+
+    private ISubscriptionRepository subscriptionRepository;
+
+
+    @Override
+    public List&lt;Skier&gt; retrieveAllSkiers() {
+<span class="nc" id="L29">        return skierRepository.findAll();</span>
+    }
+
+    @Override
+    public Skier addSkier(Skier skier) {
+<span class="nc bnc" id="L34" title="All 4 branches missed.">        switch (skier.getSubscription().getTypeSub()) {</span>
+            case ANNUAL:
+<span class="nc" id="L36">                skier.getSubscription().setEndDate(skier.getSubscription().getStartDate().plusYears(1));</span>
+<span class="nc" id="L37">                break;</span>
+            case SEMESTRIEL:
+<span class="nc" id="L39">                skier.getSubscription().setEndDate(skier.getSubscription().getStartDate().plusMonths(6));</span>
+<span class="nc" id="L40">                break;</span>
+            case MONTHLY:
+<span class="nc" id="L42">                skier.getSubscription().setEndDate(skier.getSubscription().getStartDate().plusMonths(1));</span>
+                break;
+        }
+<span class="nc" id="L45">        return skierRepository.save(skier);</span>
+    }
+
+    @Override
+    public Skier assignSkierToSubscription(Long numSkier, Long numSubscription) {
+<span class="nc" id="L50">        Skier skier = skierRepository.findById(numSkier).orElse(null);</span>
+<span class="nc" id="L51">        Subscription subscription = subscriptionRepository.findById(numSubscription).orElse(null);</span>
+<span class="nc" id="L52">        skier.setSubscription(subscription);</span>
+<span class="nc" id="L53">        return skierRepository.save(skier);</span>
+    }
+
+    @Override
+    public Skier addSkierAndAssignToCourse(Skier skier, Long numCourse) {
+<span class="nc" id="L58">        Skier savedSkier = skierRepository.save(skier);</span>
+<span class="nc" id="L59">        Course course = courseRepository.getById(numCourse);</span>
+<span class="nc" id="L60">        Set&lt;Registration&gt; registrations = savedSkier.getRegistrations();</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        for (Registration r : registrations) {</span>
+<span class="nc" id="L62">            r.setSkier(savedSkier);</span>
+<span class="nc" id="L63">            r.setCourse(course);</span>
+<span class="nc" id="L64">            registrationRepository.save(r);</span>
+<span class="nc" id="L65">        }</span>
+<span class="nc" id="L66">        return savedSkier;</span>
+    }
+
+    @Override
+    public void removeSkier(Long numSkier) {
+<span class="nc" id="L71">        skierRepository.deleteById(numSkier);</span>
+<span class="nc" id="L72">    }</span>
+
+    @Override
+    public Skier retrieveSkier(Long numSkier) {
+<span class="nc" id="L76">        return skierRepository.findById(numSkier).orElse(null);</span>
+    }
+
+    @Override
+    public Skier assignSkierToPiste(Long numSkieur, Long numPiste) {
+<span class="nc" id="L81">        Skier skier = skierRepository.findById(numSkieur).orElse(null);</span>
+<span class="nc" id="L82">        Piste piste = pisteRepository.findById(numPiste).orElse(null);</span>
+        try {
+<span class="nc" id="L84">            skier.getPistes().add(piste);</span>
+<span class="nc" id="L85">        } catch (NullPointerException exception) {</span>
+<span class="nc" id="L86">            Set&lt;Piste&gt; pisteList = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L87">            pisteList.add(piste);</span>
+<span class="nc" id="L88">            skier.setPistes(pisteList);</span>
+<span class="nc" id="L89">        }</span>
+
+<span class="nc" id="L91">        return skierRepository.save(skier);</span>
+    }
+
+    @Override
+    public List&lt;Skier&gt; retrieveSkiersBySubscriptionType(TypeSubscription typeSubscription) {
+<span class="nc" id="L96">        return skierRepository.findBySubscription_TypeSub(typeSubscription);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
