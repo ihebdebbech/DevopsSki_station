@@ -86,6 +86,7 @@ pipeline {
                 reportFiles: 'index.html',
                 reportName: 'Jacoco Code Coverage Report'
             ])
+            echo "Job Name: ${env.JOB_NAME}, Build Number: ${env.BUILD_NUMBER}, Build URL: ${env.BUILD_URL}"
             emailext(
                 to: "chebbim4@gmail.com",
                 from: "chebbim4@gmail.com",
