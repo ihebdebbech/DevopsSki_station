@@ -35,7 +35,7 @@ pipeline {
          stage('Sonarqube') {
             steps {
                 echo 'sonar test';
-               sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@'
+               sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Admin123456789*'
             }
        }
 
