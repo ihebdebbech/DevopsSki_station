@@ -96,25 +96,11 @@ withCredentials([usernamePassword(credentialsId: 'dockerhub_id', usernameVariabl
 
     post {
         always {
-            publishHTML(target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: './target/site/jacoco',
-                reportFiles: 'index.html',
-                reportName: 'Jacoco Code Coverage Report'
-            ])
-            echo "Job Name: ${env.JOB_NAME}, Build Number: ${env.BUILD_NUMBER}, Build URL: ${env.BUILD_URL}"
+           
             emailext(
-                to: "iheb.debbech@esprit.tn",
-                from: "ihebdebbech20@gmail.com",
-                replyTo: "ihebdebbech20@gmail.com",
-                mimeType: 'text/html',
-                subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-                body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-                       <p>job succeded very weeelll:</p>
-                         <img src="https://www.phpro.be/uploads/media/sulu-400x400/09/469-jenkins%404x.png?v=1-0?62b3251db82aa489a7ee194a74cc6fb1" alt="jenkins">""",
-                attachmentsPattern: 'target/site/jacoco/*.html'
+                to: "ihebdebbech20@gmail.com",
+                subject: "Job is done SUccessfully",
+                body: "your build is done"
             )
         }
     }
