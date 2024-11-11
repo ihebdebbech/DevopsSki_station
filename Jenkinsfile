@@ -62,11 +62,19 @@ pipeline {
          stage('Deploy our image') {
 
            steps {
+withCredentials([usernamePassword(credentialsId: 'dockerhub_id', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    script {
+                        // Docker login using Jenkins credentials
+                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
 
+                        // Build the Docker image
+
+                        // Optional: Push the Docker image to Docker Hub
+                    sh "docker push ${registry}:$BUILD_NUMBER "
+                    }
                 script {
 
                     sh "echo $registryCredential | docker login -u ihebdebbech --password-stdin"
-                    sh "docker push ${registry}:$BUILD_NUMBER "
 
                }
 
