@@ -5,7 +5,7 @@ FROM openjdk:17-alpine
 VOLUME /tmp
 
 # Copy the JAR file into the Docker image
-COPY target/gestion-station-skii-0.0.1-SNAPSHOT.jar /app/gestion-station-skii.jar
+COPY target/gestion-station-ski-1.0.jar /app/gestion-station-skii.jar
 
 # Expose the port that the application listens on
 EXPOSE 8082
