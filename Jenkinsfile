@@ -80,7 +80,7 @@ withCredentials([usernamePassword(credentialsId: 'dockerhub_id', usernameVariabl
          }
         stage('Building and deploying using docker-compose') {
             steps {
-               sh 'docker-compose up -d'
+               sh 'docker compose up -d'
             }
         }
 
