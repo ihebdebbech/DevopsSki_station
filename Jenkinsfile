@@ -52,7 +52,7 @@ pipeline {
 
                 script {
 
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                      sh "docker build -t ${registry}:${version} ."
 
                 }
 
@@ -65,11 +65,8 @@ pipeline {
 
                 script {
 
-                    docker.withRegistry( '', registryCredential ) {
-
-                        dockerImage.push()
-
-                  }
+                    sh "echo $registryCredential | docker login -u ihebdebbech --password-stdin"
+                    sh "docker push ${registry}:${version}"
 
                }
 
