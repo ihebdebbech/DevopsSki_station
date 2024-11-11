@@ -1,12 +1,8 @@
 pipeline {
     environment {
-
         registry = "chebbi4m/backend"
-
         registryCredential = 'dockerhub_id'
-
         dockerImage = ''
-
     }
 
     agent any
@@ -14,86 +10,72 @@ pipeline {
     stages {
         stage('git') {
             steps {
-                echo 'pulling from github';
-                git branch : 'MohamedChebbi5Sim1',
-                url : 'https://github.com/ihebdebbech/DevopsSki_station.git'
+                echo 'pulling from github'
+                git branch: 'MohamedChebbi5Sim1',
+                    url: 'https://github.com/ihebdebbech/DevopsSki_station.git'
             }
         }
-         stage('maven build ') {
+
+        stage('maven build') {
             steps {
-                echo 'maven build';
-                sh """mvn clean install """
+                echo 'maven build'
+                sh """mvn clean install"""
             }
         }
-          stage('testing with mockito') {
+
+        stage('testing with mockito') {
             steps {
-                echo 'maven testing';
+                echo 'maven testing'
                 sh "mvn test"
-
-        }
-          }
-         stage('Sonarqube') {
-            steps {
-                echo 'sonar test';
-               sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@'
             }
-       }
+        }
 
-       stage('ArtifactArk') {
-           steps {
-               echo 'Deploy to nexus';
+        stage('Sonarqube') {
+            steps {
+                echo 'sonar test'
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=SonarSonar123@'
+            }
+        }
+
+        stage('Deploy to Nexus ArtifactArk') {
+            steps {
+                echo 'Deploy to nexus'
                 sh 'mvn deploy -DskipTests'
-
-           }
+            }
         }
-         stage('Building our image') {
 
+        stage('Building our image') {
             steps {
-
                 script {
-
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-
+                    dockerImage = docker.build(registry + ":$BUILD_NUMBER")
                 }
-
             }
+        }
 
-       }
-         stage('Deploy our image') {
-
-           steps {
-
+        stage('Deploy our image') {
+            steps {
                 script {
-
-                    docker.withRegistry( '', registryCredential ) {
-
+                    docker.withRegistry('', registryCredential) {
                         dockerImage.push()
-
-                  }
-
-               }
-
+                    }
+                }
             }
-
-       }
+        }
 
         stage('Building and deploying using docker-compose') {
             steps {
-               sh 'docker-compose up -d'
+                sh 'docker-compose up -d'
             }
         }
 
-
-       stage('Grafana Prometheus') {
+        stage('Grafana Prometheus') {
             steps {
-                sh 'docker start prometheus'
+                sh 'docker start prometheusfix'
                 sh 'docker start grafana'
             }
         }
-
-
-
     }
+
     post {
         always {
             publishHTML(target: [
