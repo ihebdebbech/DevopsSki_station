@@ -72,11 +72,7 @@ withCredentials([usernamePassword(credentialsId: 'dockerhub_id', usernameVariabl
                         // Optional: Push the Docker image to Docker Hub
                     sh "docker push ${registry}:$BUILD_NUMBER "
                     }
-                script {
-
-                    sh "echo $registryCredential | docker login -u ihebdebbech --password-stdin"
-
-               }
+               
 
             }
 
