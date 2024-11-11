@@ -52,7 +52,7 @@ pipeline {
 
                 script {
 
-                      sh "docker build -t ${registry}:${version} ."
+                      sh "docker build -t ${registry}:$BUILD_NUMBER" ."
 
                 }
 
@@ -66,7 +66,7 @@ pipeline {
                 script {
 
                     sh "echo $registryCredential | docker login -u ihebdebbech --password-stdin"
-                    sh "docker push ${registry}:${version}"
+                    sh "docker push ${registry}:$BUILD_NUMBER""
 
                }
 
