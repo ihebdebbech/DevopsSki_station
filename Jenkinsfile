@@ -112,8 +112,7 @@ withCredentials([usernamePassword(credentialsId: 'dockerhub_id', usernameVariabl
                 mimeType: 'text/html',
                 subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
                 body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
-                         <p>Build Status: ${currentBuild.result}</p>
-                         <p>Check console output at <a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>;</p>
+                       <p>job succeded very weeelll:</p>
                          <img src="https://www.phpro.be/uploads/media/sulu-400x400/09/469-jenkins%404x.png?v=1-0?62b3251db82aa489a7ee194a74cc6fb1" alt="jenkins">""",
                 attachmentsPattern: 'target/site/jacoco/*.html'
             )
