@@ -78,7 +78,7 @@ withCredentials([usernamePassword(credentialsId: 'dockerhub_id', usernameVariabl
 
        }
          }
-        stage('Building and deploying using docker-compose') {
+        stage('Building using docker-compose') {
             steps {
                sh 'docker compose up -d'
             }
@@ -87,7 +87,7 @@ withCredentials([usernamePassword(credentialsId: 'dockerhub_id', usernameVariabl
 
        stage('Grafana Prometheus') {
             steps {
-                sh 'docker start prometheus'
+                sh 'docker start prometheus2'
                 sh 'docker start grafana'
             }
         }
